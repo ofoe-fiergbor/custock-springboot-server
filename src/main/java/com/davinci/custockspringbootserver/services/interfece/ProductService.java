@@ -16,11 +16,11 @@ public interface ProductService {
     Product create(CreateProductDto dto) throws Exception;
     List<Supplier> fetchSuppliers() throws UserNotFoundException;
     List<Product> fetchAllProducts() throws UserNotFoundException;
+    List<Receipt> fetchAllReceipts() throws UserNotFoundException;
+    List<Invoice> fetchAllInvoices() throws UserNotFoundException;
     Supplier createSupplier(CreateSupplierDto dto) throws Exception;
     Receipt fetchReceipt(long id) throws TransactionNotFoundException, UserNotFoundException;
     Invoice fetchInvoice(long id) throws TransactionNotFoundException, UserNotFoundException;
-    List<Receipt> fetchAllReceipts() throws UserNotFoundException;
-    List<Invoice> fetchAllInvoices() throws UserNotFoundException;
     Product fetchProduct(Long productId) throws UserNotFoundException, ProductNotFoundException;
     Supplier fetchSupplier(Long supplierId) throws SupplierNotFoundException, UserNotFoundException;
     Receipt receiveProduct(ReceiveProductDto dto) throws ProductNotFoundException, SupplierNotFoundException, UserNotFoundException;

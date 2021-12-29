@@ -2,8 +2,6 @@ package com.davinci.custockspringbootserver.controller;
 
 import com.davinci.custockspringbootserver.domain.dto.product.InvoiceProductDto;
 import com.davinci.custockspringbootserver.domain.dto.product.ReceiveProductDto;
-import com.davinci.custockspringbootserver.domain.model.Invoice;
-import com.davinci.custockspringbootserver.domain.model.Receipt;
 import com.davinci.custockspringbootserver.exceptions.*;
 import com.davinci.custockspringbootserver.services.interfece.ProductService;
 import lombok.RequiredArgsConstructor;
