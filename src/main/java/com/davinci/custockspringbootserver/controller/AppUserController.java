@@ -73,5 +73,10 @@ public class AppUserController {
                 HttpStatus.OK);
     }
 
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout() {
+        return new ResponseEntity<>(userService.logout(), HttpStatus.OK);
+    }
+
 
 }

@@ -7,9 +7,10 @@ import com.davinci.custockspringbootserver.domain.model.Role;
 import com.davinci.custockspringbootserver.exceptions.UserNotFoundException;
 
 public interface AppUserService {
-    AppUser saveUser(CreateUserDto user) throws UserNotFoundException;
+    String logout();
     Role saveRole(Role role);
     void addRoleToUser(String email, String roleName);
+    AppUser saveUser(CreateUserDto user) throws UserNotFoundException;
     LoginResponse authenticateUser(String email, String password, AppUser appUser);
 
 }
