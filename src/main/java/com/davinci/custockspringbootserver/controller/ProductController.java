@@ -8,24 +8,24 @@ import com.davinci.custockspringbootserver.domain.model.Invoice;
 import com.davinci.custockspringbootserver.domain.model.Product;
 import com.davinci.custockspringbootserver.domain.model.Receipt;
 import com.davinci.custockspringbootserver.domain.model.Supplier;
-import com.davinci.custockspringbootserver.services.implementation.ProductServiceImpl;
+import com.davinci.custockspringbootserver.exceptions.InsufficientProductQuantityException;
+import com.davinci.custockspringbootserver.exceptions.ProductNotFoundException;
+import com.davinci.custockspringbootserver.exceptions.SupplierNotFoundException;
+import com.davinci.custockspringbootserver.exceptions.UserNotFoundException;
 import com.davinci.custockspringbootserver.services.interfece.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
 public class ProductController {
-    private final ProductServiceImpl productService;
+    private final ProductService productService;
 
 
-    @PostMapping("/products/create")
+    @PostMapping("/create")
     public ResponseEntity<?> createProduct(@RequestBody CreateProductDto dto) {
         try {
             Product newProduct = productService.create(dto);
@@ -35,33 +35,21 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/suppliers/create")
-    public ResponseEntity<?> createSupplier(@RequestBody CreateSupplierDto dto) {
-        try{
-            Supplier newSupplier = productService.createSupplier(dto);
-            return new ResponseEntity<>(newSupplier, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error: "+ e.getMessage(), HttpStatus.BAD_REQUEST);
+    @GetMapping
+    public ResponseEntity<?> fetchProducts() {
+        try {
+            return new ResponseEntity<>(productService.fetchAllProducts(), HttpStatus.OK);
+        } catch (UserNotFoundException e) {
+            return new ResponseEntity<>("Error: "+e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PostMapping("/products/receive")
-    public ResponseEntity<?> receiveProduct(@RequestBody ReceiveProductDto dto) {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> fetchProduct(@PathVariable Long id) {
         try {
-            Receipt newReceipt = productService.receiveProduct(dto);
-            return new ResponseEntity<>(newReceipt, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error: "+ e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PostMapping("/products/invoice")
-    public ResponseEntity<?> invoiceProduct(@RequestBody InvoiceProductDto dto) {
-        try {
-            Invoice newInvoice = productService.invoiceProduct(dto);
-            return new ResponseEntity<>(newInvoice, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error: "+ e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(productService.fetchProduct(id), HttpStatus.OK);
+        } catch (UserNotFoundException | ProductNotFoundException e) {
+            return new ResponseEntity<>("Error: "+e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
