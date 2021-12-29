@@ -1,12 +1,13 @@
 package com.davinci.custockspringbootserver.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @NoArgsConstructor
 public class Product {
@@ -14,11 +15,18 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Double quantity;
+    private Double balance;
     private String unitOfMeasurement;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Supplier supplier;
-    @ManyToOne @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER) @JsonIgnore
     private AppUser user;
 
+    public Product(String name, String unitOfMeasurement, Supplier supplier, AppUser user) {
+        this.name = name;
+        this.unitOfMeasurement = unitOfMeasurement;
+        this.supplier = supplier;
+        this.user = user;
+        this.balance = 0.00;
+    }
 }

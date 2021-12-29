@@ -16,12 +16,12 @@ public class Receipt {
     private Long id;
     private String description;
     private Double quantity;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Supplier supplier;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Product product;
     private Date timestamp;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private AppUser user;
 
     public Receipt(String description, Double quantity, Supplier supplier, Product product, AppUser user) {

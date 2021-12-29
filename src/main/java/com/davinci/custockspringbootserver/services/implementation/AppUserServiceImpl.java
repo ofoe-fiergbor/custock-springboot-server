@@ -1,11 +1,13 @@
 package com.davinci.custockspringbootserver.services.implementation;
 
+import com.davinci.custockspringbootserver.domain.dto.CreateSupplierDto;
 import com.davinci.custockspringbootserver.domain.dto.auth.CreateUserDto;
 import com.davinci.custockspringbootserver.domain.dto.auth.LoginResponse;
 import com.davinci.custockspringbootserver.domain.model.AppUser;
 import com.davinci.custockspringbootserver.domain.model.Role;
 import com.davinci.custockspringbootserver.domain.repositories.AppUserRepository;
 import com.davinci.custockspringbootserver.domain.repositories.RoleRepository;
+import com.davinci.custockspringbootserver.domain.repositories.SupplierRepository;
 import com.davinci.custockspringbootserver.services.interfece.AppUserService;
 import com.davinci.custockspringbootserver.utils.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,8 @@ public class AppUserServiceImpl implements AppUserService, UserDetailsService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final ProductServiceImpl productService;
+    private final SupplierRepository supplierRepository;
     private final JwtUtils jwtUtils;
 
 
@@ -54,7 +58,9 @@ public class AppUserServiceImpl implements AppUserService, UserDetailsService {
         newUser.setEmail(user.getEmail());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         newUser.getRoles().add(roleRepository.findRoleByName("ROLE_USER"));
-        return userRepository.save(newUser);
+        userRepository.save(newUser);
+        productService.createSupplier(new CreateSupplierDto("Cash Supplier", "n/a", newUser.getId()));
+        return newUser;
     }
 
 

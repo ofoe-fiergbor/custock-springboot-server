@@ -1,12 +1,12 @@
 package com.davinci.custockspringbootserver.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Data
+@Getter
 @Entity
 @NoArgsConstructor
 public class Supplier {
@@ -15,7 +15,12 @@ public class Supplier {
     private Long id;
     private String name;
     private String phoneNumber;
-    @ManyToOne @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER) @JsonIgnore
     private AppUser user;
 
+    public Supplier(String name, String phoneNumber, AppUser user) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.user = user;
+    }
 }

@@ -2,15 +2,17 @@ package com.davinci.custockspringbootserver.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Data
+@Getter
 @Entity
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class AppUser {

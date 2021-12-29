@@ -19,10 +19,10 @@ public class Invoice {
     private String buyer;
     private SocialMedia socialMedia;
     private double quantity;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Product product;
     private Date timestamp;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private AppUser user;
 
     public Invoice(String description, String buyer, SocialMedia socialMedia, double quantity, Product product, AppUser user) {
