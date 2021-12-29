@@ -1,6 +1,5 @@
-package com.davinci.custockspringbootserver.domain.dto;
+package com.davinci.custockspringbootserver.domain.dto.product;
 
-import com.davinci.custockspringbootserver.domain.model.Supplier;
 import lombok.Data;
 
 

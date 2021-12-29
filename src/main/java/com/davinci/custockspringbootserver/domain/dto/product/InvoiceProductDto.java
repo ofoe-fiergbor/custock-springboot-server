@@ -1,4 +1,4 @@
-package com.davinci.custockspringbootserver.domain.dto;
+package com.davinci.custockspringbootserver.domain.dto.product;
 
 import com.davinci.custockspringbootserver.utils.enums.SocialMedia;
 import lombok.Data;

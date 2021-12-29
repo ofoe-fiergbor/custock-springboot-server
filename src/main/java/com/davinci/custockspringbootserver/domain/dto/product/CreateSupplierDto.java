@@ -1,4 +1,4 @@
-package com.davinci.custockspringbootserver.domain.dto;
+package com.davinci.custockspringbootserver.domain.dto.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

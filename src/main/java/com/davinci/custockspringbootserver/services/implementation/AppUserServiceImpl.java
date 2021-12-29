@@ -1,6 +1,6 @@
 package com.davinci.custockspringbootserver.services.implementation;
 
-import com.davinci.custockspringbootserver.domain.dto.CreateSupplierDto;
+import com.davinci.custockspringbootserver.domain.dto.product.CreateSupplierDto;
 import com.davinci.custockspringbootserver.domain.dto.auth.CreateUserDto;
 import com.davinci.custockspringbootserver.domain.dto.auth.LoginResponse;
 import com.davinci.custockspringbootserver.domain.model.AppUser;
@@ -8,6 +8,7 @@ import com.davinci.custockspringbootserver.domain.model.Role;
 import com.davinci.custockspringbootserver.domain.repositories.AppUserRepository;
 import com.davinci.custockspringbootserver.domain.repositories.RoleRepository;
 import com.davinci.custockspringbootserver.domain.repositories.SupplierRepository;
+import com.davinci.custockspringbootserver.exceptions.UserNotFoundException;
 import com.davinci.custockspringbootserver.services.interfece.AppUserService;
 import com.davinci.custockspringbootserver.utils.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +52,7 @@ public class AppUserServiceImpl implements AppUserService, UserDetailsService {
     }
 
     @Override
-    public AppUser saveUser(CreateUserDto user) {
+    public AppUser saveUser(CreateUserDto user) throws UserNotFoundException {
         AppUser newUser = new AppUser();
         newUser.setFirstName(user.getFirstName());
         newUser.setLastName(user.getLastName());

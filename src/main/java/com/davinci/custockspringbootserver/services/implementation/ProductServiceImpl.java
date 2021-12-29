@@ -1,14 +1,15 @@
 package com.davinci.custockspringbootserver.services.implementation;
 
-import com.davinci.custockspringbootserver.domain.dto.CreateProductDto;
-import com.davinci.custockspringbootserver.domain.dto.CreateSupplierDto;
-import com.davinci.custockspringbootserver.domain.dto.InvoiceProductDto;
-import com.davinci.custockspringbootserver.domain.dto.ReceiveProductDto;
+import com.davinci.custockspringbootserver.domain.dto.product.CreateProductDto;
+import com.davinci.custockspringbootserver.domain.dto.product.CreateSupplierDto;
+import com.davinci.custockspringbootserver.domain.dto.product.InvoiceProductDto;
+import com.davinci.custockspringbootserver.domain.dto.product.ReceiveProductDto;
 import com.davinci.custockspringbootserver.domain.model.*;
 import com.davinci.custockspringbootserver.domain.repositories.*;
 import com.davinci.custockspringbootserver.exceptions.InsufficientProductQuantityException;
 import com.davinci.custockspringbootserver.exceptions.ProductNotFoundException;
 import com.davinci.custockspringbootserver.exceptions.SupplierNotFoundException;
+import com.davinci.custockspringbootserver.exceptions.UserNotFoundException;
 import com.davinci.custockspringbootserver.services.interfece.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,15 +35,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-
     @Override
-    public Supplier createSupplier(CreateSupplierDto dto) {
+    public Supplier createSupplier(CreateSupplierDto dto) throws UserNotFoundException {
         AppUser user = getUser(dto.getUserId());
         return supplierRepository.save(new Supplier(dto.getName(), dto.getPhoneNumber(), user));
     }
 
     @Override
-    public Receipt receiveProduct(ReceiveProductDto dto) throws ProductNotFoundException, SupplierNotFoundException {
+    public Receipt receiveProduct(ReceiveProductDto dto) throws ProductNotFoundException, SupplierNotFoundException, UserNotFoundException {
         AppUser user = getUser(dto.getUserId());
         Product product = getProduct(dto.getProductId(), user);
         Supplier supplier = getSupplier(dto.getSupplierId(), user);
@@ -52,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Invoice invoiceProduct(InvoiceProductDto dto) throws ProductNotFoundException, InsufficientProductQuantityException {
+    public Invoice invoiceProduct(InvoiceProductDto dto) throws ProductNotFoundException, InsufficientProductQuantityException, UserNotFoundException {
         AppUser user = getUser(dto.getUserId());
         Product product = getProduct(dto.getProductId(), user);
         if (product.getBalance() < dto.getQuantity()) {
@@ -62,9 +62,9 @@ public class ProductServiceImpl implements ProductService {
         return invoiceRepository.save(new Invoice(dto.getDescription(), dto.getBuyer(), dto.getSocialMedia(), dto.getQuantity(), product, user));
     }
 
-    private AppUser getUser(Long userId) {
+    private AppUser getUser(Long userId) throws UserNotFoundException {
         return appUserRepository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("User ID is incorrect."));
+                .orElseThrow(() -> new UserNotFoundException("User ID is incorrect."));
     }
 
     private Supplier getSupplier(long supplierId, AppUser user) throws SupplierNotFoundException {

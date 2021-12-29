@@ -7,6 +7,7 @@ import com.davinci.custockspringbootserver.domain.dto.auth.LoginDto;
 import com.davinci.custockspringbootserver.domain.model.AppUser;
 import com.davinci.custockspringbootserver.domain.model.Role;
 import com.davinci.custockspringbootserver.domain.repositories.AppUserRepository;
+import com.davinci.custockspringbootserver.exceptions.UserNotFoundException;
 import com.davinci.custockspringbootserver.services.implementation.AppUserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,11 +26,16 @@ public class AppUserController {
     private final AppUserRepository userRepository;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody CreateUserDto user) {
+    public ResponseEntity<?> registerUser(@RequestBody CreateUserDto user)  {
         if (userRepository.existsAppUserByEmail(user.getEmail())) {
             return new ResponseEntity<>("Email already exits.", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
+        try {
+            return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
+        } catch (UserNotFoundException e) {
+            return new ResponseEntity<>("Error: "+e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @PostMapping("/login")
