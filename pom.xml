@@ -14,7 +14,7 @@
     <name>custock-spring-boot-server</name>
     <description>custock-spring-boot-server</description>
     <properties>
-        <java.runtime.version>11</java.runtime.version>
+        <java.version>11</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -68,7 +68,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.4.12</version>
                 <configuration>
                     <excludes>
                         <exclude>
